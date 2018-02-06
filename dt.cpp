@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
   // load input
   //image<uchar> *input = loadPBM(input_name);
 
+  
   image<uchar> *input = loadPGM(input_name);
   // compute dt
   image<float> *out = dt(input);
