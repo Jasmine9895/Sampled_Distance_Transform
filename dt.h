@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <algorithm>
 #include "image.h"
+#include <time.h>
 
 #define INF 1E20
 
@@ -51,7 +52,7 @@ static float *dt(float *f, int n) {
   for (int q = 0; q <= n-1; q++) {
     while (z[k+1] < q)
       k++;
-    d[q] = square(q-v[k]) + f[v[k]];
+    d[q] = square(q-v[k]) + f[v[k]]; 
   }
 
   delete [] v;

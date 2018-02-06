@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "pnmfile.h"
 #include "imconv.h"
 #include "dt.h"
+#include <time.h>
 
 int main(int argc, char **argv) {
   if (argc != 3) {
@@ -38,8 +39,13 @@ int main(int argc, char **argv) {
   
   image<uchar> *input = loadPGM(input_name);
   // compute dt
+  clock_t timer,timer2;
+  timer = clock();
   image<float> *out = dt(input);
-
+  timer2 = clock();
+  clock_t t = timer2 - timer;
+  printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
+  //printf("Time Elapsed: %d\n ", timer2-timer);
   // take square roots
   for (int y = 0; y < out->height(); y++) {
     for (int x = 0; x < out->width(); x++) {
