@@ -23,6 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "imconv.h"
 #include "dt.h"
 #include <time.h>
+#include <chrono>
+#include<iostream>
+
 
 int main(int argc, char **argv) {
   if (argc != 3) {
@@ -41,10 +44,13 @@ int main(int argc, char **argv) {
   // compute dt
   clock_t timer,timer2;
   timer = clock();
+  auto start_wall_clock = std::chrono::steady_clock::now();
   image<float> *out = dt(input);
   timer2 = clock();
+  auto finish_wall_clock = std::chrono::steady_clock::now();
   clock_t t = timer2 - timer;
   printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
+  std::cout << "Wall clock: " << (finish_wall_clock - start_wall_clock) / std::chrono::microseconds(1) << " microseconds\n";
   //printf("Time Elapsed: %d\n ", timer2-timer);
   // take square roots
   for (int y = 0; y < out->height(); y++) {
