@@ -2,7 +2,8 @@ INCDIR = -I.
 DBG    = -g
 OPT    = -O3
 CPP    = g++
-CFLAGS = $(DBG) $(OPT) $(INCDIR)
+STD    = -std=gnu++11
+CFLAGS = $(DBG) $(OPT) $(INCDIR) $(STD)
 LINK   = -lm 
 
 .cpp.o:
