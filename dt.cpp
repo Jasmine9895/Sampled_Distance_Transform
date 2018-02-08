@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <time.h>
 #include <chrono>
 #include<iostream>
-
+#include<omp.h>
 
 int main(int argc, char **argv) {
   if (argc != 3) {
@@ -42,18 +42,36 @@ int main(int argc, char **argv) {
   
   image<uchar> *input = loadPGM(input_name);
   // compute dt
-  clock_t timer,timer2;
-  timer = clock();
   auto start_wall_clock = std::chrono::steady_clock::now();
   image<float> *out = dt(input);
-  timer2 = clock();
   auto finish_wall_clock = std::chrono::steady_clock::now();
-  clock_t t = timer2 - timer;
-  printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
   std::cout << "Wall clock: " << (finish_wall_clock - start_wall_clock) / std::chrono::microseconds(1) << " microseconds\n";
   //printf("Time Elapsed: %d\n ", timer2-timer);
   // take square roots
-  for (int y = 0; y < out->height(); y++) {
+ int A[5] = {10,11,12,13,14}; 
+  omp_set_num_threads(8);
+  #pragma omp parallel shared(A) 
+{
+	printf("\nThread num: %d \n",omp_get_thread_num());
+	int a= 5;
+	#pragma omp for
+	for(int i=0;i<5;i++) 
+	{
+		printf("\nNum(%d) TN:(%d) A[%d] = %d \n",i,omp_get_thread_num(),i,A[i]);
+		for(int j=0;j<5;j++) 
+		{
+			printf("\nThread num: %d \n",omp_get_thread_num());
+			printf("i-BA[%d] = %d   ",i,A[i]);
+			printf("j-B[%d] = %d   ",j,A[j]);
+		}
+		printf("\n");
+	}
+	
+	
+	printf("\n");
+}
+
+for (int y = 0; y < out->height(); y++) {
     for (int x = 0; x < out->width(); x++) {
       imRef(out, x, y) = sqrt(imRef(out, x, y));
     }

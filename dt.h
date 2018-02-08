@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include "image.h"
 #include <time.h>
-
+#include<omp.h>
 #define INF 1E20
 
 /* dt of 1d function using squared distance */
@@ -64,26 +64,40 @@ static float *dt(float *f, int n) {
 static void dt(image<float> *im) {
   int width = im->width();
   int height = im->height();
-  float *f = new float[std::max(width,height)];
 
   // transform along columns
+  omp_set_num_threads(4);
+  #pragma omp parallel 
+{
+	printf("Hello ");
+}
+ //   float *d;
+int x =0,y=0;
+#pragma omp parallel shared(im)
+{
+  float * f = new float[std::max(width,height)];
+  #pragma omp for
   for (int x = 0; x < width; x++) {
     for (int y = 0; y < height; y++) {
       f[y] = imRef(im, x, y);
     }
-    float *d = dt(f, height);
+   float * d = dt(f, height);
     for (int y = 0; y < height; y++) {
       imRef(im, x, y) = d[y];
     }
     delete [] d;
   }
-
+}
   // transform along rows
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
+//#pragma omp parallel for shared(im)private(f,y,x) 
+
+float * f = new float[std::max(width,height)];
+float * d = dt(f, height);
+for (y = 0; y < height; y++) {
+    for (x = 0; x < width; x++) {
       f[x] = imRef(im, x, y);
     }
-    float *d = dt(f, width);
+    d = dt(f, width);
     for (int x = 0; x < width; x++) {
       imRef(im, x, y) = d[x];
     }
