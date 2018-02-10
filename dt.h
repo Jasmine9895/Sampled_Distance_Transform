@@ -91,20 +91,21 @@ int x =0,y=0;
   // transform along rows
 //#pragma omp parallel for shared(im)private(f,y,x) 
 
-float * f = new float[std::max(width,height)];
-float * d = dt(f, height);
+//float * d = dt(f, height);
+#pragma omp parallel for
 for (y = 0; y < height; y++) {
+	float * f = new float[std::max(width,height)];
     for (x = 0; x < width; x++) {
       f[x] = imRef(im, x, y);
     }
-    d = dt(f, width);
+  float * d = dt(f, width);
     for (int x = 0; x < width; x++) {
       imRef(im, x, y) = d[x];
     }
     delete [] d;
+    delete f;
   }
 
-  delete f;
 }
 
 
