@@ -10,8 +10,8 @@ LINK   = -lm
 
 all: dt
 
-dt: dt.cpp 
-	$(CPP) $(CFLAGS) -o dt dt.cpp $(LINK)
+dt: dt1d.cpp 
+	$(CPP) $(CFLAGS) -o dt dt1d.cpp $(LINK)
 
 clean:
 	/bin/rm -f dt *.o

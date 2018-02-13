@@ -1,0 +1,6 @@
+#!/bin/bash 
+echo "Calling make clean and make,and calling function falled by graph"
+make clean
+make
+./dt input.pgm out.pgm
+python graph_data.py
