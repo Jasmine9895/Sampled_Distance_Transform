@@ -24,8 +24,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "dt.h"
 #include <time.h>
 #include <chrono>
-#include<iostream>
-#include<omp.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <errno.h>
+#include <vector>
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+int getdir (string dir, vector<string> &files)
+{
+    DIR *dp;
+    struct dirent *dirp;
+    if((dp  = opendir(dir.c_str())) == NULL) {
+        cout << "Error(" << errno << ") opening " << dir << endl;
+        return errno;
+    }
+
+    while ((dirp = readdir(dp)) != NULL) {
+        files.push_back(string(dirp->d_name));
+    }
+    closedir(dp);
+    return 0;
+}
 
 int main(int argc, char **argv) {
   if (argc != 3) {
@@ -39,51 +61,47 @@ int main(int argc, char **argv) {
   // load input
   //image<uchar> *input = loadPBM(input_name);
 
-  
-  image<uchar> *input = loadPGM(input_name);
-  // compute dt
-  auto start_wall_clock = std::chrono::steady_clock::now();
-  image<float> *out = dt(input);
-  auto finish_wall_clock = std::chrono::steady_clock::now();
-  std::cout << "Wall clock: " << (finish_wall_clock - start_wall_clock) / std::chrono::microseconds(1) << " microseconds\n";
-  //printf("Time Elapsed: %d\n ", timer2-timer);
-  // take square roots
- int A[5] = {10,11,12,13,14}; 
-  omp_set_num_threads(8);
-  #pragma omp parallel shared(A) 
-{
-	printf("\nThread num: %d \n",omp_get_thread_num());
-	int a= 5;
-	#pragma omp for
-	for(int i=0;i<5;i++) 
-	{
-		printf("\nNum(%d) TN:(%d) A[%d] = %d \n",i,omp_get_thread_num(),i,A[i]);
-		for(int j=0;j<5;j++) 
-		{
-			printf("\nThread num: %d \n",omp_get_thread_num());
-			printf("i-BA[%d] = %d   ",i,A[i]);
-			printf("j-B[%d] = %d   ",j,A[j]);
-		}
-		printf("\n");
-	}
-	
-	
-	printf("\n");
-}
+    string dir = string("./img/");
+    vector<string> files = vector<string>();
 
-for (int y = 0; y < out->height(); y++) {
-    for (int x = 0; x < out->width(); x++) {
-      imRef(out, x, y) = sqrt(imRef(out, x, y));
+    getdir(dir,files);
+
+    auto start_wall_clock = std::chrono::steady_clock::now();
+    for (unsigned int i = 4;i < files.size();i++)//change 5 to files.size() 
+    {
+     //   cout << files[i] << endl;
+    
+    
+
+    //string a = "Before loading";
+    //cout <<  files[1] << endl;
+    string in_name = "img/" + files[i];
+   // cout << in_name << "\n";
+    image<uchar> *input = loadPGM(in_name.c_str());
+    // compute dt
+   // cout << "Error in loading\n";
+    image<float> *out = dt(input);
+    //printf("Time Elapsed: %d\n ", timer2-timer);
+    // take square roots
+    for (int y = 0; y < out->height(); y++) {
+      for (int x = 0; x < out->width(); x++) {
+        imRef(out, x, y) = sqrt(imRef(out, x, y));
+      }
     }
-  }
 
-  // convert to grayscale
-  image<uchar> *gray = imageFLOATtoUCHAR(out);
+    // convert to grayscale
+    image<uchar> *gray = imageFLOATtoUCHAR(out);
 
-  // save output
-  savePGM(gray, output_name);
+    // save output
+   string out_name = "result_images/res_"  + files[i];
+    savePGM(gray, out_name.c_str());
 
-  delete input;
-  delete out;
-  delete gray;
+    delete input;
+    delete out;
+    delete gray;
 }
+  
+    auto finish_wall_clock = std::chrono::steady_clock::now();
+    std::cout << "Wall clock: " << (finish_wall_clock - start_wall_clock) / std::chrono::microseconds(1) << " microseconds\n";
+}
+

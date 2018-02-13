@@ -66,11 +66,11 @@ static void dt(image<float> *im) {
   int height = im->height();
 
   // transform along columns
-  omp_set_num_threads(4);
-  #pragma omp parallel 
+  omp_set_num_threads(1);
+/*  #pragma omp parallel 
 {
 	printf("Hello ");
-}
+}*/
  //   float *d;
 int x =0,y=0;
 #pragma omp parallel shared(im)
@@ -82,7 +82,8 @@ int x =0,y=0;
       f[y] = imRef(im, x, y);
     }
    float * d = dt(f, height);
-    for (int y = 0; y < height; y++) {
+  //  #pragma omp for
+	for (int y = 0; y < height; y++) {
       imRef(im, x, y) = d[y];
     }
     delete [] d;
@@ -115,7 +116,8 @@ static image<float> *dt(image<uchar> *im, uchar on = 1) {
   int height = im->height();
 
   image<float> *out = new image<float>(width, height, false);
-  for (int y = 0; y < height; y++) {
+ // #pragma omp parallel for //adding this line seems to reduce the speed 
+  for(int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
       if (imRef(im, x, y) == on)
 	imRef(out, x, y) = 0;
