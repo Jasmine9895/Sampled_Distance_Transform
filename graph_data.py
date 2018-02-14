@@ -6,10 +6,10 @@ with open('example.txt') as f:
 
 print(array[0])
 print(array[1])
-t = np.arange(0,10)
-print t
+t = np.arange(0,30)
+print(t)
 
-plt.plot(t,array[1],t,array[0])
+plt.plot(t,array[0],t,array[1])
 #plt.subplot(211)
 plt.title("array")
 #

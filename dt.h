@@ -55,6 +55,26 @@ static float *dt(float *f, int n) {
     d[q] = square(q-v[k]) + f[v[k]]; 
   }
 
+  printf("Values of v:\n");
+  for(int tk=0;tk<n;tk++) printf("%f ",v[tk]);
+  printf("\n");
+  printf("Values of z:\n");
+  std::ofstream outfile;
+  outfile.open("example.txt");
+  
+  int max=40;
+  printf("Printing z[tk] values");
+  for(int tk=1;tk<n+1;tk++) 
+  {
+    printf("%f ",z[tk]);
+    if(z[tk]>max) z[tk] = max;
+    if(z[tk]< -max) z[tk] = -max;
+    outfile<<float(z[tk]) << " "; 
+    
+  }
+  outfile << "\n";
+  outfile.close();
+  printf("\n");
   delete [] v;
   delete [] z;
   return d;
