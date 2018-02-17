@@ -170,7 +170,7 @@ static float *dt(float *f, int n) {
 		std::ofstream outfile;
 		outfile.open("example.txt");
 		
-		for(int np=0;np<1;np++)
+		for(int np=0;np<Num_par;np++)
 		{
 			float *d = new float[n]; //Values of distance for q starting from d2 
 			int *v = new int[n];
@@ -179,7 +179,7 @@ static float *dt(float *f, int n) {
 			v[0] = 0;
 			z[0] = -INF;
 			z[1] = +INF;
-			for (int q = 0; q <= n-1; q=q+1)  //q=q+Num_par as we want to alternate in the number of processors
+			for (int q = 1+np; q <= n-1; q=q+Num_par)  //q=q+Num_par as we want to alternate in the number of processors
 			{
 				float s  = ((f[q]+square(q))-(f[v[k]]+square(v[k])))/(2*q-2*v[k]);
 				while (s <= z[k]) {
@@ -196,7 +196,8 @@ static float *dt(float *f, int n) {
 			printf("Values for np = %d: ",np);
 			outfile << d_ForAll[np][0]<< " "; //TODO:Remove this and below- used for debugging
 			outfile << d_ForAll[np][1]<< " "; //TODO : Now do a dry run to figure out what's wrong
-			for (int q = 2; q <= n-1; q++) {
+			for (int q = 2; q <= n-1; q++) 
+			{
 				while (z[k+1] < q)
 					k++;
 				d_ForAll[np][q] = square(q-v[k]) + f[v[k]];
