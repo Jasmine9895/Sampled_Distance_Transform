@@ -22,6 +22,7 @@ plt.title("array")
 #plt.title("distance_transform")
 
 #This is so that the plot window closes, to end the program
-plt.show(block=False)
-input("Hit Enter To Close")
-plt.close()
+#plt.show(block=False)
+#input("Hit Enter To Close")
+#plt.close()
+plt.show()
