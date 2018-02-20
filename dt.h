@@ -194,9 +194,9 @@ static float *dt(float *f, int n) {
 
 			k = 0;
 			printf("Values for np = %d: ",np);
-			outfile << d_ForAll[np][0]<< " "; //TODO:Remove this and below- used for debugging
-			outfile << d_ForAll[np][1]<< " "; //TODO : Now do a dry run to figure out what's wrong
-			for (int q = 2; q <= n-1; q++) 
+			//outfile << d_ForAll[np][0]<< " "; //TODO:Remove this and below- used for debugging
+			//outfile << d_ForAll[np][1]<< " "; //TODO : Now do a dry run to figure out what's wrong
+			for (int q = 0; q <= n-1; q++) 
 			{
 				while (z[k+1] < q)
 					k++;
@@ -215,7 +215,7 @@ static float *dt(float *f, int n) {
 		for(int q=0;q<n;q++)
 		{
 			int temp_min = d_ForAll[0][q];
-			for(int np=1;np<Num_par;np++)
+			for(int np=0;np<Num_par;np++)
 			{ 
 				if(d_ForAll[np][q] < temp_min) temp_min = d_ForAll[np][q];
 
