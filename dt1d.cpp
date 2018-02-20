@@ -51,46 +51,69 @@ int getdir (string dir, vector<string> &files)
 }
 
 int main(int argc, char **argv) {
-//   if (argc != 3) {
-//     fprintf(stderr, "usage: %s input(pbm) output(pgm)\n", argv[0]);
-//     return 1;
-//   }
+    int mode = 0; //0 for 2-D and 1 for 1-D
+    if(mode==0) //2-D
+    {
+        if (argc != 3) {
+            fprintf(stderr, "usage: %s input(pbm) output(pgm)\n", argv[0]);
+            return 1;
+        }
 
-//   char *input_name = argv[1];
-//   char *output_name = argv[2];
+        char *input_name = argv[1];
+        char *output_name = argv[2];
 
-  // load input
-  //image<uchar> *input = loadPBM(input_name);
-    ofstream myfile;
+      
+        image<uchar> *input = loadPGM(input_name);
+        image<float> *out = dt(input);
+
+        for (int y = 0; y < out->height(); y++) 
+        {
+            for (int x = 0; x < out->width(); x++) 
+            {
+                imRef(out, x, y) = sqrt(imRef(out, x, y));
+            }
+        }
+
+    // convert to grayscale
+        image<uchar> *gray = imageFLOATtoUCHAR(out);
+        savePGM(gray, output_name);
+
+    }
+    else
+    {
+        
+        
+        ofstream myfile;
+        
     
-  
-    int n = 30;
+        int n = 30;
 
-    float A[30] = {0};
-    for(int i=0;i<n;i++) A[i] = 200;
-    
-    A[3] = 4;
-    A[8] = 9;
-    A[17] = 4;
-    A[21] = 30;
-    A[27] = 15;
-    A[22] = 12;
-    A[10] = 5;
-    A[26] = 8;
-    //cout << ";
+        float A[30] = {0};
+        for(int i=0;i<n;i++) A[i] = 200;
+        
+        A[3] = 4;
+        A[8] = 9;
+        A[17] = 4;
+        A[21] = 30;
+        A[27] = 15;
+        A[22] = 12;
+        A[10] = 5;
+        A[26] = 8;
+        //cout << ";
 
-    float *res = dt(A,30);
-    
-    //myfile.open ("example.txt");
-    myfile.open ("example.txt", std::ios_base::app);
-    for(int i=0;i<n;i++) myfile << A[i] << " " ;
-    myfile << "\n";
-    for(int i=0;i<n;i++) myfile << res[i] << " " ;
+        float *res = dt(A,30);
+        
+        //myfile.open ("example.txt");
+        myfile.open ("example.txt", std::ios_base::app);
+        for(int i=0;i<n;i++) myfile << A[i] << " " ;
+        myfile << "\n";
+        for(int i=0;i<n;i++) myfile << res[i] << " " ;
 
-    myfile << "\n";
+        myfile << "\n";
 
-    
-    myfile.close();
+        
+        myfile.close();
+        }
 
 
 

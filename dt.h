@@ -26,13 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <time.h>
 #include <vector>
 
-#define INF 900 //was 1E20 !!!TODO 50 for debugging
+#define INF 1E20 //was 1E20 !!!TODO 50 for debugging
 using namespace std;
 /* dt of 1d function using squared distance */
 static float *dt(float *f, int n) {
 	float *d0 = new float[n]; //Values of distance for q starting from d1
 	float *d1 = new float[n]; //Values of distance for q starting from d2 
-	int old_method =2;
+	int old_method =1;
 
 
 	if(old_method == 1)
@@ -64,15 +64,7 @@ static float *dt(float *f, int n) {
 		}
 		//TODO- expand z to align with q to understand how it is affecting clearly
 		//Also plot v to see impact
-		printf("Values of v:\n");
-		for(int tk=0;tk<n;tk++) printf("%f ",v[tk]);
-		printf("\n");
-		printf("Values of z:\n");
-		std::ofstream outfile;
-		outfile.open("example.txt");
-		
-		int max=50;
-		printf("Printing z[tk] values");
+		/*ntf("Printing z[tk] values");
 		
 		for(int tk=1;tk<n+1;tk++) 
 		{
@@ -91,10 +83,11 @@ static float *dt(float *f, int n) {
 			outfile<<float(v[tk]) << " "; 
 			
 		}
-
+		
 		outfile << "\n";
 		outfile.close();
 		printf("\n");
+		*/
 		delete [] v;
 		delete [] z;
 		return d;
@@ -163,7 +156,7 @@ static float *dt(float *f, int n) {
 	else
 	{
 		//This is just to test things out
-		int Num_par = 3;
+		int Num_par = 2;
 		int Num_elements = n/Num_par;
 		vector<vector<float> > d_ForAll(Num_par,vector<float>(n,INF));
 		
@@ -193,7 +186,7 @@ static float *dt(float *f, int n) {
 			}
 
 			k = 0;
-			printf("Values for np = %d: ",np);
+		//	printf("Values for np = %d: ",np);
 			//outfile << d_ForAll[np][0]<< " "; //TODO:Remove this and below- used for debugging
 			//outfile << d_ForAll[np][1]<< " "; //TODO : Now do a dry run to figure out what's wrong
 			for (int q = 0; q <= n-1; q++) 
@@ -201,11 +194,11 @@ static float *dt(float *f, int n) {
 				while (z[k+1] < q)
 					k++;
 				d_ForAll[np][q] = square(q-v[k]) + f[v[k]];
-				outfile << d_ForAll[np][q] << " ";
-				printf("%f ",d_ForAll[np][q]);
+			//	outfile << d_ForAll[np][q] << " ";
+				//printf("%f ",d_ForAll[np][q]);
 			}
-			outfile << "\n";
-			printf("\n");
+			//outfile << "\n";
+			//printf("\n");
 			delete [] v;
 			delete [] z;
 

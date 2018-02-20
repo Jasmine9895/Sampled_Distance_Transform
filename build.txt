@@ -2,5 +2,5 @@
 echo "Calling make clean and make"
 make clean
 make
-./dt
+./dt input.pgm out1d2.pgm
 
