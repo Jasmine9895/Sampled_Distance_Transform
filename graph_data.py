@@ -11,7 +11,7 @@ print(t)
 
 #plt.plot(t,array[1],t,array[2])
 #plt.plot(t,array[0],t,array[1],t,array[2]) #normal case
-plt.plot(t,array[0],t,array[1],t,array[2],t,array[3]) #normal case
+plt.plot(t,array[0],t,array[1],t,array[2],t,array[3],t,array[4]) #normal case
 plt.xticks(np.arange(min(t), max(t)+1, 2.0))
 plt.grid()
 #plt.subplot(211)

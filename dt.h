@@ -163,7 +163,7 @@ static float *dt(float *f, int n) {
 	else
 	{
 		//This is just to test things out
-		int Num_par = 2;
+		int Num_par = 3;
 		int Num_elements = n/Num_par;
 		vector<vector<float> > d_ForAll(Num_par,vector<float>(n,INF));
 		
