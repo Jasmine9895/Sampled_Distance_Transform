@@ -26,13 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <time.h>
 #include <vector>
 
-#define INF 1E20 //was 1E20 !!!TODO 50 for debugging
+#define INF 1000000 //was 1E20 !!!TODO 50 for debugging
 using namespace std;
 /* dt of 1d function using squared distance */
 static float *dt(float *f, int n) {
 	float *d0 = new float[n]; //Values of distance for q starting from d1
 	float *d1 = new float[n]; //Values of distance for q starting from d2 
-	int old_method =1;
+	int old_method =2;
 
 
 	if(old_method == 1)
